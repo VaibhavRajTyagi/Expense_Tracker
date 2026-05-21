@@ -2,39 +2,19 @@
   "name": "expense-tracker",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "workspaces": [
+    "BE",
+    "FE"
+  ],
   "scripts": {
-    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:client": "vite",
-    "dev:server": "node server/index.js",
-    "build": "tsc -b && vite build",
-    "build:client": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.2.2",
-    "better-sqlite3": "^12.8.0",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "recharts": "^3.8.0",
-    "tailwindcss": "^4.2.2"
+    "dev": "concurrently \"npm run dev -w expense-tracker-be\" \"npm run dev -w expense-tracker-fe\"",
+    "dev:be": "npm run dev -w expense-tracker-be",
+    "dev:fe": "npm run dev -w expense-tracker-fe",
+    "build": "npm run build -w expense-tracker-fe",
+    "lint": "npm run lint -w expense-tracker-fe",
+    "start:be": "npm run start -w expense-tracker-be"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@types/node": "^24.12.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.0",
-    "concurrently": "^9.2.1",
-    "eslint": "^9.39.4",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.4.0",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.56.1",
-    "vite": "^8.0.0"
+    "concurrently": "^9.2.1"
   }
 }
