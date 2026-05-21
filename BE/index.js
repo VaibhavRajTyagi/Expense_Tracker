@@ -8,15 +8,22 @@ import { fileURLToPath } from 'node:url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const dataDir = path.join(__dirname, 'data')
+const dataDir = process.env.DATA_DIR ?? path.join(__dirname, 'data')
 const dbPath = path.join(dataDir, 'expense-tracker.db')
 
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true })
 }
 
-const db = new Database(dbPath)
-db.pragma('journal_mode = WAL')
+let db
+try {
+  db = new Database(dbPath)
+  db.pragma('journal_mode = WAL')
+  console.log(`Database ready at ${dbPath}`)
+} catch (error) {
+  console.error('Failed to initialize database:', error)
+  process.exit(1)
+}
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS accounts (
@@ -56,6 +63,10 @@ db.prepare(
 const app = express()
 app.use(cors())
 app.use(express.json())
+
+app.get('/', (_req, res) => {
+  res.json({ ok: true, service: 'expense-tracker-api' })
+})
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true })
@@ -221,6 +232,18 @@ app.post('/api/reset', (_req, res) => {
 })
 
 const port = Number(process.env.PORT ?? 8787)
-app.listen(port, () => {
-  console.log(`API listening on http://localhost:${port}`)
+const host = '0.0.0.0'
+
+app.listen(port, host, () => {
+  console.log(`API listening on http://${host}:${port}`)
+})
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught exception:', error)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled rejection:', reason)
+  process.exit(1)
 })

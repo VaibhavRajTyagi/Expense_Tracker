@@ -5,13 +5,12 @@ services:
     name: expense-tracker-api
     runtime: node
     rootDir: BE
-    buildCommand: npm install --omit=dev
+    buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: "22"
-      - key: PORT
-        value: "10000"
 
   # Frontend static site (Vite build) — use npm only, not yarn
   - type: web
