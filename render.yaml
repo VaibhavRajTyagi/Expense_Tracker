@@ -1,0 +1,25 @@
+services:
+  # Backend API (Node + SQLite)
+  - type: web
+    name: expense-tracker-api
+    runtime: node
+    rootDir: BE
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: PORT
+        value: "10000"
+
+  # Frontend static site (Vite build)
+  - type: web
+    name: expense-tracker-web
+    runtime: static
+    rootDir: FE
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
