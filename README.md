@@ -48,9 +48,16 @@ Use **two separate services** (or the root `render.yaml` Blueprint):
 | **API** | `BE` | `npm install --omit=dev` | Start: `npm start` |
 | **Static site** | `FE` | `npm install && npm run build` | Publish: `dist` |
 
-**Important:** The API (`BE`) has no frontend build. If you set Root Directory to `BE`, do **not** use `npm run build` as the build command.
+**Important:**
+- Do **not** use `yarn install; yarn build` — this project uses **npm** (`package-lock.json`).
+- The API (`BE`) has no frontend build. Do **not** run `npm run build` on the API service.
+- Set **Node.js version** to `22` in Render (Settings → Environment).
+- Set env var `VITE_API_URL` on the static site to your API URL (e.g. `https://expense-tracker-api.onrender.com`), then redeploy.
 
-For the static site, set env var `VITE_API_URL` to your deployed API URL (e.g. `https://expense-tracker-api.onrender.com`).
+**If build still fails:** In Render → your static site → Settings → Build & Deploy, set:
+- Root Directory: `FE`
+- Build Command: `npm install && npm run build`
+- Publish Directory: `dist`
 
 ## Production notes
 

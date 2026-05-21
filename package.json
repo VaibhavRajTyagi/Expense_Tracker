@@ -11,6 +11,7 @@
     "dev:be": "npm run dev -w expense-tracker-be",
     "dev:fe": "npm run dev -w expense-tracker-fe",
     "build": "npm run build -w expense-tracker-fe",
+    "build:fe": "npm run build -w expense-tracker-fe",
     "lint": "npm run lint -w expense-tracker-fe",
     "start:be": "npm run start -w expense-tracker-be"
   },

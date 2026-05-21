@@ -13,12 +13,12 @@ services:
       - key: PORT
         value: "10000"
 
-  # Frontend static site (Vite build)
+  # Frontend static site (Vite build) — use npm only, not yarn
   - type: web
     name: expense-tracker-web
     runtime: static
     rootDir: FE
-    buildCommand: npm install && npm run build
+    buildCommand: bash render-build.sh
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
