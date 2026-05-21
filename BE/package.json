@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "node -e \"console.log('API: no compile step required')\""
   },
   "dependencies": {
     "better-sqlite3": "^12.8.0",

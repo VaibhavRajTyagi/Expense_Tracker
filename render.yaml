@@ -1,10 +1,11 @@
+# Deploy as Blueprint, or configure each service manually in Render dashboard.
 services:
-  # Backend API (Node + SQLite)
+  # Backend API (Node + SQLite) — do NOT run "npm run build" here
   - type: web
     name: expense-tracker-api
     runtime: node
     rootDir: BE
-    buildCommand: npm install
+    buildCommand: npm install --omit=dev
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
@@ -19,6 +20,9 @@ services:
     rootDir: FE
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
     routes:
       - type: rewrite
         source: /*

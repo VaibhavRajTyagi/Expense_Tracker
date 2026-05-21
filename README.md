@@ -39,8 +39,20 @@ npm run dev:fe   # UI on http://localhost:5173
 
 The frontend proxies `/api` requests to the backend during development.
 
+## Deploy on Render
+
+Use **two separate services** (or the root `render.yaml` Blueprint):
+
+| Service | Root Directory | Build Command | Start / Publish |
+|---------|----------------|---------------|-----------------|
+| **API** | `BE` | `npm install --omit=dev` | Start: `npm start` |
+| **Static site** | `FE` | `npm install && npm run build` | Publish: `dist` |
+
+**Important:** The API (`BE`) has no frontend build. If you set Root Directory to `BE`, do **not** use `npm run build` as the build command.
+
+For the static site, set env var `VITE_API_URL` to your deployed API URL (e.g. `https://expense-tracker-api.onrender.com`).
+
 ## Production notes
 
-- Build frontend: `npm run build`
+- Build frontend: `npm run build` (from repo root) or `npm run build` inside `FE/`
 - Start backend: `npm run start:be` (set `PORT` if needed)
-- Deploy `BE/` and `FE/dist/` separately, or host the API and serve the static frontend from your provider.
