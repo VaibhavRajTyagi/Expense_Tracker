@@ -1,4 +1,6 @@
 import { type FormEvent, useMemo, useState } from 'react'
+import { formatCurrency } from '../../lib/currency'
+import { fieldClass, selectClass } from '../../lib/formStyles'
 import { SectionScaffold } from './SectionScaffold'
 import type { Account, AppCategory, Transaction, TransactionDraft } from '../../types/finance'
 
@@ -13,7 +15,6 @@ type TransactionsSectionProps = {
 }
 
 const categories: AppCategory[] = ['income', 'investment', 'lifestyle', 'software', 'tax', 'operations']
-const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
 export function TransactionsSection({
   transactions,
@@ -24,8 +25,6 @@ export function TransactionsSection({
   onDeleteTransaction,
   onOpenAccounts,
 }: TransactionsSectionProps) {
-  const fieldClass =
-    'rounded-xl bg-white px-3 py-2 text-sm text-slate-800 outline-none ring-1 ring-slate-200 transition focus:ring-[#4c616c] dark:bg-white/10 dark:text-slate-100 dark:ring-white/10 dark:focus:ring-slate-400'
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<'all' | AppCategory>('all')
   const [selectedAccount, setSelectedAccount] = useState<'all' | string>('all')
@@ -136,7 +135,7 @@ export function TransactionsSection({
             <select
               value={draft.category}
               onChange={(event) => setDraft((prev) => ({ ...prev, category: event.target.value as AppCategory }))}
-              className={fieldClass}
+              className={selectClass}
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
@@ -147,7 +146,7 @@ export function TransactionsSection({
             <select
               value={effectiveDraftAccountId}
               onChange={(event) => setDraft((prev) => ({ ...prev, accountId: event.target.value }))}
-              className={fieldClass}
+              className={selectClass}
             >
               {accounts.map((account) => (
                 <option key={account.id} value={account.id}>
@@ -175,7 +174,7 @@ export function TransactionsSection({
           <select
             value={selectedCategory}
             onChange={(event) => setSelectedCategory(event.target.value as 'all' | AppCategory)}
-            className={fieldClass}
+            className={selectClass}
           >
             <option value="all">All categories</option>
             {categories.map((category) => (
@@ -187,7 +186,7 @@ export function TransactionsSection({
           <select
             value={selectedAccount}
             onChange={(event) => setSelectedAccount(event.target.value)}
-            className={fieldClass}
+            className={selectClass}
           >
             <option value="all">All accounts</option>
             {accounts.map((account) => (
@@ -199,7 +198,7 @@ export function TransactionsSection({
           <select
             value={selectedType}
             onChange={(event) => setSelectedType(event.target.value as 'all' | 'income' | 'expense')}
-            className={fieldClass}
+            className={selectClass}
           >
             <option value="all">All types</option>
             <option value="income">Income</option>
@@ -215,10 +214,10 @@ export function TransactionsSection({
 
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-2xl bg-slate-100 p-4 text-sm text-slate-700 dark:bg-white/5 dark:text-slate-200">
-            Inflow: <span className="font-semibold">{currency.format(totalInflow)}</span>
+            Inflow: <span className="font-semibold">{formatCurrency(totalInflow)}</span>
           </div>
           <div className="rounded-2xl bg-slate-100 p-4 text-sm text-slate-700 dark:bg-white/5 dark:text-slate-200">
-            Outflow: <span className="font-semibold">{currency.format(totalOutflow)}</span>
+            Outflow: <span className="font-semibold">{formatCurrency(totalOutflow)}</span>
           </div>
         </div>
 
@@ -236,7 +235,7 @@ export function TransactionsSection({
               </div>
               <div className="flex items-center gap-3">
                 <p className={`font-semibold ${txn.amount >= 0 ? 'text-emerald-600 dark:text-emerald-300' : 'text-rose-600 dark:text-rose-300'}`}>
-                  {txn.amount >= 0 ? '+' : '-'} {currency.format(Math.abs(txn.amount))}
+                  {txn.amount >= 0 ? '+' : '-'} {formatCurrency(Math.abs(txn.amount))}
                 </p>
                 <button
                   type="button"

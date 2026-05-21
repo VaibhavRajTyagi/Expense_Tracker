@@ -10,6 +10,7 @@ import {
   YAxis,
   Cell,
 } from 'recharts'
+import { formatCurrency } from '../../lib/currency'
 import type { Account, Transaction } from '../../types/finance'
 
 type DashboardSectionProps = {
@@ -17,8 +18,6 @@ type DashboardSectionProps = {
   transactions: Transaction[]
   onOpenTransactions: () => void
 }
-
-const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 })
 
 export function DashboardSection({ accounts, transactions, onOpenTransactions }: DashboardSectionProps) {
   const currentMonth = new Date().toISOString().slice(0, 7)
@@ -65,14 +64,14 @@ export function DashboardSection({ accounts, transactions, onOpenTransactions }:
       description="Live summary of your current month performance and account health."
       actions={
         <p className={`text-sm font-medium ${net >= 0 ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-600 dark:text-rose-300'}`}>
-          {net >= 0 ? '+' : '-'} {currency.format(Math.abs(net))}
+          {net >= 0 ? '+' : '-'} {formatCurrency(Math.abs(net))}
         </p>
       }
     >
       <div className="space-y-6">
         <div className="rounded-3xl bg-slate-100/80 p-6 dark:bg-white/5">
           <p className="text-right text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-50 sm:text-6xl">
-            {currency.format(totalLiquidity)}
+            {formatCurrency(totalLiquidity)}
           </p>
         </div>
 
@@ -91,7 +90,7 @@ export function DashboardSection({ accounts, transactions, onOpenTransactions }:
             </div>
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {[
-                { label: 'Burn Rate', value: currency.format(expenses), width: `${Math.min(100, expenses / 80)}%` },
+                { label: 'Burn Rate', value: formatCurrency(expenses), width: `${Math.min(100, expenses / 80)}%` },
                 { label: 'Savings Ratio', value: `${Math.max(0, savingsRatio).toFixed(1)}%`, width: `${Math.min(100, Math.max(0, savingsRatio))}%` },
                 { label: 'Debt Index', value: debtIndex.toFixed(2), width: `${Math.min(100, debtIndex * 100)}%` },
               ].map((metric) => (
@@ -112,7 +111,7 @@ export function DashboardSection({ accounts, transactions, onOpenTransactions }:
                 <LineChart data={trendData}>
                   <XAxis dataKey="day" stroke="#64748b" tick={{ fontSize: 11 }} />
                   <YAxis stroke="#64748b" tick={{ fontSize: 11 }} />
-                  <Tooltip />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
                   <Line type="monotone" dataKey="net" stroke="#4c616c" strokeWidth={2.5} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
@@ -129,7 +128,7 @@ export function DashboardSection({ accounts, transactions, onOpenTransactions }:
                       <Cell key={entry.name} fill={piePalette[idx % piePalette.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip formatter={(value) => `${Number(value).toFixed(1)}%`} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -166,7 +165,7 @@ export function DashboardSection({ accounts, transactions, onOpenTransactions }:
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{txn.date}</p>
                 </div>
                 <p className="font-semibold text-slate-900 dark:text-slate-100">
-                  {txn.amount >= 0 ? '+' : '-'} {currency.format(Math.abs(txn.amount))}
+                  {txn.amount >= 0 ? '+' : '-'} {formatCurrency(Math.abs(txn.amount))}
                 </p>
               </li>
             ))}

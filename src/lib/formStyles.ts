@@ -1,0 +1,4 @@
+export const fieldClass =
+  'rounded-xl bg-white px-3 py-2 text-sm text-slate-800 outline-none ring-1 ring-slate-200 transition focus:ring-[#4c616c] dark:bg-[#1a2328] dark:text-slate-100 dark:ring-white/15 dark:focus:ring-slate-400'
+
+export const selectClass = `${fieldClass} cursor-pointer appearance-none bg-[length:1rem] bg-[right_0.65rem_center] bg-no-repeat pr-9 [background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")] dark:[background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")]`

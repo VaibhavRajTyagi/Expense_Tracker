@@ -1,12 +1,11 @@
 import { SectionScaffold } from './SectionScaffold'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { formatCurrency } from '../../lib/currency'
 import type { Transaction } from '../../types/finance'
 
 type InsightsSectionProps = {
   transactions: Transaction[]
 }
-
-const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
 
 export function InsightsSection({ transactions }: InsightsSectionProps) {
   const monthBuckets = Array.from({ length: 6 }, (_, idx) => {
@@ -43,7 +42,7 @@ export function InsightsSection({ transactions }: InsightsSectionProps) {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#94a3b8" opacity={0.3} />
                 <XAxis dataKey="label" stroke="#64748b" tick={{ fontSize: 11 }} />
                 <YAxis stroke="#64748b" tick={{ fontSize: 11 }} domain={[0, maxMagnitude]} />
-                <Tooltip />
+                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
                 <Bar dataKey="income" fill="#10b981" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="expense" fill="#f43f5e" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -54,12 +53,12 @@ export function InsightsSection({ transactions }: InsightsSectionProps) {
           <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Strategy Notes</p>
           <ul className="mt-4 space-y-4 text-sm text-slate-600 dark:text-slate-300">
             <li>
-              Net trend: <span className="font-medium">{currency.format(monthBuckets[5]?.net ?? 0)}</span> this month.
+              Net trend: <span className="font-medium">{formatCurrency(monthBuckets[5]?.net ?? 0)}</span> this month.
             </li>
             <li>
               Top expense category:{' '}
               <span className="font-medium">
-                {topCategory ? `${topCategory[0]} (${currency.format(topCategory[1])})` : 'No expense data yet'}
+                {topCategory ? `${topCategory[0]} (${formatCurrency(topCategory[1])})` : 'No expense data yet'}
               </span>
             </li>
             <li>

@@ -1,4 +1,6 @@
 import { type FormEvent, useState } from 'react'
+import { formatCurrency } from '../../lib/currency'
+import { fieldClass, selectClass } from '../../lib/formStyles'
 import { SectionScaffold } from './SectionScaffold'
 import type { Account, Transaction } from '../../types/finance'
 
@@ -7,10 +9,6 @@ type AccountsSectionProps = {
   transactions: Transaction[]
   onAddAccount: (payload: Omit<Account, 'id'>) => Promise<void>
 }
-
-const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
-const fieldClass =
-  'rounded-xl bg-white px-3 py-2 text-sm text-slate-800 outline-none ring-1 ring-slate-200 transition focus:ring-[#4c616c] dark:bg-white/10 dark:text-slate-100 dark:ring-white/10 dark:focus:ring-slate-400'
 
 export function AccountsSection({ accounts, transactions, onAddAccount }: AccountsSectionProps) {
   const [draft, setDraft] = useState<Omit<Account, 'id'>>({
@@ -68,7 +66,7 @@ export function AccountsSection({ accounts, transactions, onAddAccount }: Accoun
         <select
           value={draft.type}
           onChange={(event) => setDraft((prev) => ({ ...prev, type: event.target.value as Account['type'] }))}
-          className={fieldClass}
+          className={selectClass}
         >
           <option value="checking">checking</option>
           <option value="savings">savings</option>
@@ -97,7 +95,7 @@ export function AccountsSection({ accounts, transactions, onAddAccount }: Accoun
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Account</p>
             <h3 className="mt-2 text-xl font-semibold text-slate-900 dark:text-slate-100">{account.name}</h3>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{account.institution}</p>
-            <p className="mt-5 text-3xl font-semibold text-slate-900 dark:text-slate-100">{currency.format(balance)}</p>
+            <p className="mt-5 text-3xl font-semibold text-slate-900 dark:text-slate-100">{formatCurrency(balance)}</p>
             <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
               {((balance / totalBalance) * 100 || 0).toFixed(1)}% of total • {txCount} transactions
             </p>

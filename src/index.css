@@ -19,4 +19,30 @@
   #root {
     min-height: 100vh;
   }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  select,
+  input,
+  textarea {
+    color-scheme: light;
+  }
+
+  .dark select,
+  .dark input[type='date'],
+  .dark input[type='month'] {
+    color-scheme: dark;
+  }
+
+  .dark select option {
+    background-color: #1a2328;
+    color: #f1f5f9;
+  }
+
+  select option {
+    background-color: #ffffff;
+    color: #1e293b;
+  }
 }
